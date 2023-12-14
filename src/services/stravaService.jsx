@@ -1,38 +1,34 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const BASE_URL = 'https://www.strava.com/api/v3';
-const ACCESS_TOKEN = 'fc44e65c3298f6898bbf4d65ca50a715cebf5650';
+  const clientID = 118134;
+  const clientSecret = "52e11efbae1513701e5c45d1fb056682bea4d508";
+  const refreshToken = "821cf62a91f4485d0ce70663a58a29929b8fe109"
+  const auth_link = "https://www.strava.com/oauth/token"
+  const activities_link = `https://www.strava.com/api/v3/athlete/activities`
 
-const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    Authorization: `Bearer ${ACCESS_TOKEN}`,
-  },
-});
-
-export const getActivities = async () => {
-    try {
-      const response = await axiosInstance.get('/athlete/activities');
-      console.log('Respuesta exitosa:', response.data);
-      return response.data;
-    } catch (error) {
-      handleApiError(error, 'Error al obtener actividades de Strava');
+    async function fetchData() {
+      try {
+        const stravaAuthResponse = await axios.post(`${auth_link}?client_id=${clientID}&client_secret=${clientSecret}&refresh_token=${refreshToken}&grant_type=refresh_token`);
+        let activitiesArray = []
+        
+        if (!stravaAuthResponse.data || !stravaAuthResponse.data.access_token) {
+          console.error('Error fetching Strava token:', stravaAuthResponse);
+          return;
+        }
+  
+       
+        const stravaActivityResponse = await axios.get(`${activities_link}?access_token=${stravaAuthResponse.data.access_token}`);
+        stravaActivityResponse.data.forEach(activity => {
+          activitiesArray.push(activity)
+        });
+        
+       return activitiesArray
+  
+      
+      } catch (error) {
+        console.error('Error fetching data:', error);
+       
+      }
     }
-  };
 
-
-  const handleApiError = (error, customMessage) => {
-    if (error.response) {
-      // El servidor respondió con un código de estado que no está en el rango 2xx
-      console.error('Error de respuesta del servidor:', error.response.data);
-      console.error('Código de estado:', error.response.status);
-      console.error('Cabeceras de respuesta:', error.response.headers);
-    } else if (error.request) {
-      // La solicitud fue realizada, pero no se recibió respuesta
-      console.error('No se recibió respuesta del servidor:', error.request);
-    } else {
-      // Se produjo un error durante la configuración de la solicitud
-      console.error('Error de configuración de la solicitud:', error.message);
-    }
-    throw error;
-  };
+export default fetchData;
