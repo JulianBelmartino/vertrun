@@ -1,0 +1,22 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height:64vh;
+    padding: 10px;
+    color: rgb(167, 166, 166);
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+    color: rgb(99, 98, 98);
+}
+.headerTitles{
+    min-width:300px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.img{
+    max-height: 40px;
+    max-width: auto;
+}

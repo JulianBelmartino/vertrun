@@ -1,0 +1,11 @@
+.container{
+
+display: flex;
+width: 100%;
+justify-content: space-between;
+
+}
+.info, .name{
+    font-family: Arial, Helvetica, sans-serif;
+    min-width:300px;
+}
