@@ -48,9 +48,7 @@ import axios from 'axios'
     
          
           if (Object.keys(activitiesByMonth).includes(String(activityMonth))) {
-        
             const activityWithId = { ...activity, id: activityMonth };
-  
             activitiesByMonth[activityMonth].push(activityWithId);
           }
         });
