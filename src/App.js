@@ -5,6 +5,8 @@ import Footer from './components/footer/footer.jsx';
 import MonthList from './components/monthList/monthList.jsx';
 import MonthDetail from './components/monthDetail/monthDetail.jsx';
 import MonthStats from './components/monthStats/monthStats.jsx';
+
+
 function App() {
  
   return (

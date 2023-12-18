@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-  const clientID = 118134;
-  const clientSecret = "52e11efbae1513701e5c45d1fb056682bea4d508";
-  const refreshToken = "821cf62a91f4485d0ce70663a58a29929b8fe109"
-  const auth_link = "https://www.strava.com/oauth/token"
-  const activities_link = `https://www.strava.com/api/v3/athlete/activities`
+  const clientID = process.env.REACT_APP_CLIENT_ID
+  const clientSecret = process.env.REACT_APP_CLIENT_SECRET
+  const refreshToken = process.env.REACT_APP_REFRESH_TOKEN
+  const auth_link = process.env.REACT_APP_AUTH_LINK
+  const activities_link = process.env.REACT_APP_ACTIVITES_LINK
 
     async function fetchData() {
       try {
