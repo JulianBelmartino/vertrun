@@ -17,15 +17,15 @@ export function getMonthDetail(month){
     return async function(dispatch){
    const response = await monthDetail(month)
    return dispatch({
-   type: GET_DETAIL,
-    payload: response,
- });
- }
+       type: GET_DETAIL,
+       payload: response,
+    });
+}
 }
 //TRAER LOS ULTIMOS TRES MESES
 export function getThreeMonths(){
     return async function(dispatch){
-   const response = await threeLastMonths()
+        const response = await threeLastMonths()
    return dispatch({
    type: GET_TRIMESTER,
     payload: response,

@@ -22,6 +22,7 @@ const MonthDetail = () => {
         await dispatch(getMonthDetail(id));
   
         const fetchedData = activities
+        
         setData(fetchedData);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -31,9 +32,11 @@ const MonthDetail = () => {
     };
   
     fetchData();
-  }, [dispatch, id, activities]);
+  }, [dispatch, id]);
+
+  console.log(activities)
     return (
-        <div className={styles.container}>
+      <div className={styles.container}>
           <div className={styles.header}>
         <h1 className={styles.headerTitles}>Name</h1>
         <h1 className={styles.headerTitles}>Date</h1>
@@ -41,9 +44,15 @@ const MonthDetail = () => {
         <h1 className={styles.headerTitles}>Time</h1>
         <h1 className={styles.headerTitles}>Elevation</h1>
         </div>
-        {
-           loading ? (   
-            <img className={styles.img} src='/circle-loading.gif' alt='loading'/>
+      
+      {loading ? (   
+        <img className={styles.img} src='/circle-loading.gif' alt='loading'/>
+        ) : (
+          data?.length === 0 ? (
+            <>
+              <h1>No hay data</h1>
+              {console.log('oh')}
+            </>
           ) : (
         activities.map((activity) => (
         <MonthsAct 
@@ -56,8 +65,9 @@ const MonthDetail = () => {
                      elevationGain={activity.total_elevation_gain}
             />
 
-        )))}
+        ))))}
         </div>
+      
     );
 };
 

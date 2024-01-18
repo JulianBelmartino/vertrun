@@ -34,25 +34,28 @@ import axios from 'axios'
        
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth() + 1; 
-    
- 
+        
+        
         const activitiesByMonth = {
           [currentMonth]: [],
-          [currentMonth - 1]: [],
-          [currentMonth - 2]: [],
+          [currentMonth - 1 === 0 ? "12" : currentMonth - 1]: [],
+          [currentMonth - 2 === -1 ? 11 : currentMonth - 2]: [],
         };
-    
+
+        
+
+      console.log('keys:', activitiesByMonth)
         activities.forEach(activity => {
           const activityDate = new Date(activity.start_date); 
           const activityMonth = activityDate.getMonth() + 1; 
-    
+          
          
           if (Object.keys(activitiesByMonth).includes(String(activityMonth))) {
             const activityWithId = { ...activity, id: activityMonth };
             activitiesByMonth[activityMonth].push(activityWithId);
           }
         });
-      
+        
         return activitiesByMonth;
       } catch (error) {
         console.error('Error fetching last three months activities:', error);
@@ -63,11 +66,23 @@ import axios from 'axios'
     async function monthDetail(chosenMonth) {
       try {
         const activities = await fetchData();
-    
+       
         
-        const monthStart = new Date(new Date().getFullYear(), chosenMonth - 1, 1);
-        const monthEnd = new Date(new Date().getFullYear(), chosenMonth, 0);
-    
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1; // January is 0, so add 1 to get the actual month
+        
+        let yearToCheck = currentYear;
+        let monthToCheck = chosenMonth;
+        
+        // If chosen month is greater than the current month, adjust the year
+        if (chosenMonth > currentMonth) {
+          yearToCheck = currentYear - 1; // Adjust to the previous year
+        }
+        
+        const monthStart = new Date(yearToCheck, monthToCheck - 1, 1);
+        const monthEnd = new Date(yearToCheck, monthToCheck, 0);
+        
         const monthActivities = activities.filter(activity => {
           const activityDate = new Date(activity.start_date); 
           return activityDate >= monthStart && activityDate <= monthEnd;
