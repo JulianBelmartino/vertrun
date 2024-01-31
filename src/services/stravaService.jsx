@@ -30,32 +30,32 @@ import axios from 'axios'
     async function threeLastMonths() {
       try {
         const activities = await fetchData();
-    
-       
+      
         const currentDate = new Date();
-        const currentMonth = currentDate.getMonth() + 1; 
-        
-        
+        const currentMonth = currentDate.getMonth() + 1;
+        const year = currentDate.getFullYear();
+      
         const activitiesByMonth = {
-          [currentMonth]: [],
-          [currentMonth - 1 === 0 ? "12" : currentMonth - 1]: [],
-          [currentMonth - 2 === -1 ? 11 : currentMonth - 2]: [],
+          [`${currentMonth}-${year}`]: [],
+          [`${currentMonth - 1 === 0 ? 12 : currentMonth - 1}-${currentMonth - 1 === 0 ? year - 1 : year}`]: [],
+          [`${currentMonth - 2 === -1 ? 11 : currentMonth - 2}-${currentMonth - 2 === -1 ? year - 1 : year}`]: [],
         };
-
-        
-
-      console.log('keys:', activitiesByMonth)
+      
+        console.log('keys:', Object.keys(activitiesByMonth));
+      
         activities.forEach(activity => {
-          const activityDate = new Date(activity.start_date); 
-          const activityMonth = activityDate.getMonth() + 1; 
-          
-         
-          if (Object.keys(activitiesByMonth).includes(String(activityMonth))) {
+          const activityDate = new Date(activity.start_date);
+          const activityMonth = activityDate.getMonth() + 1;
+          const activityYear = activityDate.getFullYear();
+      
+          const key = `${activityMonth}-${activityYear}`;
+      
+          if (Object.keys(activitiesByMonth).includes(key)) {
             const activityWithId = { ...activity, id: activityMonth };
-            activitiesByMonth[activityMonth].push(activityWithId);
+            activitiesByMonth[key].push(activityWithId);
           }
         });
-        
+      console.log(activitiesByMonth)
         return activitiesByMonth;
       } catch (error) {
         console.error('Error fetching last three months activities:', error);
